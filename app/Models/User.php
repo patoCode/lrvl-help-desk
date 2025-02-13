@@ -7,16 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Ramsey\Uuid\Uuid;
+use function PHPUnit\Framework\isEmpty;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'fullname',
         'username',
@@ -26,14 +22,6 @@ class User extends Authenticatable
         'status',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-    ];
 
     /**
      * Get the attributes that should be cast.
@@ -54,7 +42,7 @@ class User extends Authenticatable
     protected static function boot(){
         parent::boot();
         static::creating(function($model){
-            if($model->id){
+            if(empty($model->id)){
                 $model->id = (string) Uuid::uuid4();
             }
         });

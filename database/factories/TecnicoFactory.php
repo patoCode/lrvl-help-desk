@@ -24,7 +24,7 @@ class TecnicoFactory extends Factory
             'usuario_id' => User::factory(),
             'registry_by' => Arr::random(['denis.rodriguez','natalia.medrano','angemon']),
             'updated_by' => Arr::random(['denis.rodriguez','natalia.medrano','angemon']),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

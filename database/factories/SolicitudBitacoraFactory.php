@@ -32,7 +32,7 @@ class SolicitudBitacoraFactory extends Factory
             'solicitud_id' => Solicitud::factory(),
             'tecnico_id' => Tecnico::factory(),
             'status_bitacora' => Arr::random(['actual','partial','completed','paused']),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

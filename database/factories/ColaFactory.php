@@ -23,7 +23,7 @@ class ColaFactory extends Factory
             'id' => Uuid::uuid4(),
             'ultima_asignacion' => 0,
             'category_id' => Categoria::factory(),
-            'status' => Arr::random(['active','inactive'])
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

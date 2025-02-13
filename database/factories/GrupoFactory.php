@@ -22,7 +22,7 @@ class GrupoFactory extends Factory
             'id' => Uuid::uuid4(),
             'key' => $this->faker->countryCode(),
             'nombre' => $this->faker->name(),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

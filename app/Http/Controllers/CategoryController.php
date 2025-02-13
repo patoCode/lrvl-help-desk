@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CategoriaCreada;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Categoria;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -39,24 +41,43 @@ class CategoryController extends Controller
         return CategoryResource::collection($list);
     }
 
-    public function store(Request $req)
+    public function show($id)
     {
-        $validated = $req->validate([
-            'nombre' => 'required|min:4',
-        ]);
+        return response()->json(['category' => Categoria::findOrFail($id)], Response::HTTP_OK);
+    }
 
+    public function store(CategoryRequest $req)
+    {
         try {
-            $toPersist = $req->all();
-            $categoria = Categoria::create($toPersist);
-            return new CategoryResource($categoria);
+            $categoria = Categoria::create($req->validated());
+            event(new CategoriaCreada($categoria));
+            return response()->json(['category' => new CategoryResource($categoria)], Response::HTTP_OK);
         }catch(\Exception $e){
-            return response()->json(['msg' => $e->getMessage()]);
+            return response()->json(['msg' => $e->getMessage(), 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function edit(CategoryRequest $req, string $id)
+    {
+        $categoria = Categoria::findOrFail($id);
+        $categoria->fill($req->validated());
+        if($categoria->save()){
+            return response()->json(['category' => new CategoryResource($categoria)], Response::HTTP_OK);
+        }else{
+            return response()->json(['msg' => 'Error al actualizar categoría'], response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    public function show($id)
+    public function destroy(string $id)
     {
-        return Categoria::findOrFail($id);
+        $categoria = Categoria::findOrFail($id);
+        $categoria->delete();
+
+        return response()->json(
+            ['msg' => 'Categoría eliminada correctamente'],
+            Response::HTTP_OK
+        );
     }
+
 }

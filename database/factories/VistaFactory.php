@@ -24,7 +24,7 @@ class VistaFactory extends Factory
             'url' => $this->faker->url(),
             'description' => $this->faker->paragraph(2),
             'version' => rand(1,3),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

@@ -11,6 +11,14 @@ class Solicitud extends ModelBase
 {
     use HasFactory;
 
+
+    protected $attributes = [
+        'is_public' => true,
+        'is_promediable' => true,
+        'is_schedulable' => false,
+    ];
+
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);

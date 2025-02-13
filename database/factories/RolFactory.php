@@ -21,7 +21,7 @@ class RolFactory extends Factory
         return [
             'id' => Uuid::uuid4(),
             'nombre' => $this->faker->name(),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

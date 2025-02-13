@@ -24,7 +24,7 @@ class VistaRolFactory extends Factory
             'id' => Uuid::uuid4(),
             'vista_id' => Vista::factory(), // Relación con Vista
             'rol_id' => Rol::factory(), // Relación con Rol
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

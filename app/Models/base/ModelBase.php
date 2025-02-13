@@ -2,6 +2,7 @@
 
 namespace App\Models\base;
 
+use App\Constants\BasicConstants;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
@@ -12,10 +13,7 @@ class ModelBase extends Model
     protected $keyType = 'string';
 
     protected $attributes = [
-        'is_public' => true,
-        'is_promediable' => true,
-        'is_schedulable' => false,
-        'status' => 'activo',
+        'status' => BasicConstants::STATUS_ACTIVE,
     ];
 
     protected static function boot(){

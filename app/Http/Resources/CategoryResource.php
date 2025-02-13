@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Constants\BasicConstants;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,9 +18,9 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'publica' => $this->is_public?'si':'no',
-            'promediable' =>$this->is_promediable?'si':'no',
-            'cronogramable' =>$this->is_schedulable?'si':'no',
+            'publica' => $this->is_public ? BasicConstants::TRUE_VALUE : BasicConstants::FALSE_VALUE,
+            'promediable' =>$this->is_promediable ? BasicConstants::TRUE_VALUE : BasicConstants::FALSE_VALUE,
+            'cronogramable' =>$this->is_schedulable ? BasicConstants::TRUE_VALUE : BasicConstants::FALSE_VALUE,
             'status' => $this->status
         ];
     }

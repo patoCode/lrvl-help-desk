@@ -24,7 +24,7 @@ class CategoriaFactory extends Factory
             'is_public' => Arr::random([true, false]),
             'is_promediable' => Arr::random([true, false]),
             'is_schedulable' => Arr::random([true, false]),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

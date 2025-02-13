@@ -27,7 +27,7 @@ class GrupoUsuarioFactory extends Factory
             'usuario_id' => User::factory(),
             'tecnico_id' => Tecnico::factory(),
             'grupo_id' => Grupo::factory(),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }

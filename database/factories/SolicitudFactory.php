@@ -33,7 +33,7 @@ class SolicitudFactory extends Factory
             'usuario_id' => User::factory(),
             'tecnico_id' => Tecnico::factory(),
             'cola_id' => Cola::factory(),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
 
         ];
     }

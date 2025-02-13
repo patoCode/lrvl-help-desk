@@ -26,7 +26,7 @@ class ConfigurationFactory extends Factory
             'string_value' => $this->faker->words(3, true),
             'numeric_value' => $this->faker->numberBetween(1000,100000),
             'registry_by' => Arr::random(['gomamon','patamon','angemon']),
-            'status' => Arr::random(['active','inactive']),
+            'status' => Arr::random(['activo','inactivo']),
         ];
     }
 }
