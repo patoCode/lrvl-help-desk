@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CategoryResource;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Uuid;
 
 class CategoryController extends Controller
 {

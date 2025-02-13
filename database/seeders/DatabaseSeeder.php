@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        echo ":::: STARTING FEED ::::\n";
+        echo ":::: STARTING SEED ::::\n";
         $users = User::factory(10)->create();
         $rols = Rol::factory(4)->create();
         $vistas = Vista::factory(5)->create();
