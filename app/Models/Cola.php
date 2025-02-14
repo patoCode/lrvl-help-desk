@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\BasicConstants;
 use App\Models\base\ModelBase;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,5 +17,16 @@ class Cola extends ModelBase
     {
         return $this->belongsTo(Categoria::class, 'category_id','id');
     }
+
+    public static function findByCategory(string $id)
+    {
+        return self::where('category_id', $id)
+                    ->where('status', BasicConstants::STATUS_ACTIVE)
+                    ->orderBy('created_at', 'desc')
+                    ->pluck('id')
+                    ->toArray();
+    }
+
+
 
 }

@@ -10,7 +10,6 @@ use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
-
     public function index()
     {
         $query = (new Categoria)->newQuery();
@@ -40,12 +39,10 @@ class CategoryController extends Controller
         $list = $query->paginate($perPage);
         return CategoryResource::collection($list);
     }
-
     public function show($id)
     {
         return response()->json(['category' => Categoria::findOrFail($id)], Response::HTTP_OK);
     }
-
     public function store(CategoryRequest $req)
     {
         try {
@@ -56,7 +53,6 @@ class CategoryController extends Controller
             return response()->json(['msg' => $e->getMessage(), 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
-
     public function edit(CategoryRequest $req, string $id)
     {
         $categoria = Categoria::findOrFail($id);
@@ -68,7 +64,6 @@ class CategoryController extends Controller
         }
 
     }
-
     public function destroy(string $id)
     {
         $categoria = Categoria::findOrFail($id);

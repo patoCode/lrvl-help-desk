@@ -10,7 +10,20 @@ use Ramsey\Uuid\Uuid;
 class Solicitud extends ModelBase
 {
     use HasFactory;
-
+    protected $table = "solicitud";
+    protected $fillable = [
+                            'id',
+                            'description',
+                            'priority',
+                            'registry_by',
+                            'updated_by',
+                            'is_promediable',
+                            'category_id',
+                            'usuario_id',
+                            'tecnico_id',
+                            'cola_id',
+                            'status'
+                            ];
 
     protected $attributes = [
         'is_public' => true,

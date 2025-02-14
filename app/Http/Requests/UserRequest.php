@@ -2,20 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Constants\BasicConstants;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\base\BaseRequest;
 use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class UserRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -33,17 +24,11 @@ class UserRequest extends FormRequest
                 'email',
                 Rule::unique('users', 'email')->ignore($userId), // Excluye la validación de unicidad para el usuario actual
             ],
+            'rols' => 'nullable|array',
+            'rols.*' => 'string',
             'ldap' => 'required|in:si,no',
             'status' => 'required|in:activo,inactivo'
         ];
     }
 
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'status' => in_array(strtolower($this->status),[BasicConstants::STATUS_ACTIVE,BasicConstants::STATUS_IN_ACTIVE])
-                ? $this->status
-                : BasicConstants::STATUS_ACTIVE
-        ]);
-    }
 }

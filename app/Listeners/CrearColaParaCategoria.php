@@ -29,6 +29,5 @@ class CrearColaParaCategoria
                 'status' => BasicConstants::STATUS_ACTIVE
             ]);
         }
-        Log::info($event->categoria->id, [$cola]);
     }
 }

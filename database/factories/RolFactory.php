@@ -21,6 +21,8 @@ class RolFactory extends Factory
         return [
             'id' => Uuid::uuid4(),
             'nombre' => $this->faker->name(),
+            'default' =>Arr::random(['si','no']),
+            'sys_code'=> Arr::random(['TEC','SOL','ADM']),
             'status' => Arr::random(['activo','inactivo']),
         ];
     }
