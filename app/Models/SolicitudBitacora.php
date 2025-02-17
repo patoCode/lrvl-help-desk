@@ -10,6 +10,19 @@ use Ramsey\Uuid\Uuid;
 class SolicitudBitacora extends ModelBase
 {
     use HasFactory;
+    protected $table = 'solicitud_bitacoras';
+    protected $fillable = [
+        'nro_evento',
+        'evento',
+        'observacion',
+        'registry_by',
+        'usuario_id',
+        'category_id',
+        'solicitud_id',
+        'tecnico_id',
+        'status_bitacora',
+        'status'
+    ];
 
     public function user()
     {

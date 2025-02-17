@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('colas', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->integer('ultima_asignacion')->default(0);
+            $table->integer('max_value')->default(1);
             $table->string('category_id')->nullable(false);
             $table->string('status',10);
             $table->timestamps();

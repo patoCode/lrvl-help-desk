@@ -23,7 +23,7 @@ class RolFactory extends Factory
             'nombre' => $this->faker->name(),
             'default' =>Arr::random(['si','no']),
             'sys_code'=> Arr::random(['TEC','SOL','ADM']),
-            'status' => Arr::random(['activo','inactivo']),
+            'status' => Arr::random(['activo','activo']),
         ];
     }
 }

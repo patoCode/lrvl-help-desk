@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('tecnicos', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('usuario_id');
+            $table->string('phone')->nullable(false)->default('0000');
+            $table->string('email');
+            $table->string('photo')->nullable();
             $table->string('registry_by');
             $table->string('updated_by');
             $table->string('status',10);

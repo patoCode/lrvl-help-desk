@@ -3,17 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Constants\BasicConstants;
-use App\Events\Assignation;
+
+use App\Constants\BitacoraStatusEnum;
+use App\Constants\SolicitudEventoEnum;
+use App\Events\AsignarIncidente;
+use App\Events\BitacoraRegister;
+use App\Http\Requests\EventSolicitudRequest;
 use App\Http\Requests\SolicitudRequest;
-use App\Listeners\AssignIncident;
 use App\Models\Cola;
 use App\Models\Solicitud;
 use App\Models\TecnicoCola;
+use App\Services\ConfigSystemService;
 use App\Services\SolicitudValidationService;
 use Illuminate\Http\Response;
 
 class SolicitudController extends Controller
 {
+    private ConfigSystemService $config;
+    public function __construct(ConfigSystemService $config)
+    {
+        $this->config = $config;
+    }
     public function index()
     {
         // TODO ADD FILTERS
@@ -24,18 +34,28 @@ class SolicitudController extends Controller
     public function store(SolicitudRequest $req)
     {
         try{
+            $event = SolicitudEventoEnum::CREATED;
+
             $valid = $req->validated();
             SolicitudValidationService::validateCategoryActive($req->category_id);
-            $cola = Cola::findByCategory($req->category_id);
-            SolicitudValidationService::validateColaHasTechnician($cola[0]);
-
+            $cola = Cola::findColaInCategory($req->category_id);
+            SolicitudValidationService::validateColaHasTechnician($cola->id);
             $valid = $this->aditionals($valid);
             $valid['code'] = $this->createCode($cola);
-
             $toPersist = Solicitud::create($valid);
 
-            event(new Assignation($toPersist));
-//            dd($toPersist);
+            if($this->config->autoAssign()){
+                event(new AsignarIncidente($toPersist, $cola));
+            }
+
+            if ($toPersist->tecnico_id == null) {
+                $event = SolicitudEventoEnum::CREATED_NOT_ASSIGNED;
+            }
+
+            event(new BitacoraRegister($toPersist,
+                "Solicitud Creada",
+                $event,
+                BitacoraStatusEnum::INITIAL));
 
             return response()->json(['msg' => 'Solicitud Creada',
                 'solicitud' => $toPersist ], Response::HTTP_OK);
@@ -52,10 +72,12 @@ class SolicitudController extends Controller
         $array['is_promediable'] = true;
         $array['registry_by'] = "Denis";
         $array['updated_by'] = "Denis";
-        $array['usuario_id'] = "bc6043b0-10e0-4712-95e0-6795d2555aef";
-        $array['status'] = BasicConstants::STATUS_ACTIVE;
+        $array['usuario_id'] = "d19391ac-b16d-45b6-8649-95a92033ccdc";
+        $array['status'] = SolicitudEventoEnum::CREATED;
         return $array;
     }
+
+
 
     private function assignation($array){
         $cola = Cola::findByCategory($array['category_id']);
@@ -83,5 +105,103 @@ class SolicitudController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function event(EventSolicitudRequest $req)
+    {
+        try{
+            $valid = $req->validated();
+            $incident = Solicitud::findOrFail($valid['incidente']);
+
+            if($this->isAvailable($incident)){
+                return response()->json([
+                    'msg' => 'Error! La solicitud ya esta cerrada',
+                ], Response::HTTP_ACCEPTED);
+            }
+
+            event(new BitacoraRegister($incident,
+                "Evento registrado",
+                SolicitudEventoEnum::ATTENTION,
+                BitacoraStatusEnum::PARTIAL));
+
+            return response()->json([
+                'msg' => 'registro Ok',
+                'detalle' => $valid
+            ], Response::HTTP_OK);
+        }catch( \Exception $e ){
+            return response()->json([
+                'msg' => "EXCEPTION",
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function solve(EventSolicitudRequest $req)
+    {
+        try{
+            $valid = $req->validated();
+            $incident = Solicitud::findOrFail($valid['incidente']);
+
+            if($this->isAvailable($incident)){
+                return response()->json([
+                    'msg' => 'Error! La solicitud ya esta cerrada',
+                ], Response::HTTP_ACCEPTED);
+            }
+
+            event(new BitacoraRegister($incident,
+                "Incidente solucionado",
+                SolicitudEventoEnum::CLOSE,
+                BitacoraStatusEnum::FINISH));
+
+            $incident->status = SolicitudEventoEnum::CLOSE;
+            $incident->save();
+
+            return response()->json([
+                'msg' => 'registro Ok',
+                'detalle' => $valid
+            ], Response::HTTP_OK);
+        }catch( \Exception $e ){
+            return response()->json([
+                'msg' => "EXCEPTION",
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function reject(EventSolicitudRequest $req)
+    {
+        try{
+            $valid = $req->validated();
+            $incident = Solicitud::findOrFail($valid['incidente']);
+
+            if($this->isAvailable($incident)){
+                return response()->json([
+                    'msg' => 'Error! La solicitud ya esta cerrada',
+                ], Response::HTTP_ACCEPTED);
+            }
+
+            event(new BitacoraRegister($incident,
+                "Incidente solucionado",
+                SolicitudEventoEnum::REJECT,
+                BitacoraStatusEnum::FINISH));
+
+            $incident->status = SolicitudEventoEnum::REJECT;
+            $incident->save();
+
+            return response()->json([
+                'msg' => 'registro Ok',
+                'detalle' => $valid
+            ], Response::HTTP_OK);
+        }catch( \Exception $e ){
+            return response()->json([
+                'msg' => "EXCEPTION",
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    private function isAvailable($incident): bool
+    {
+        return $incident->status === SolicitudEventoEnum::CLOSE->value || $incident->status === SolicitudEventoEnum::REJECT->value;
     }
 }

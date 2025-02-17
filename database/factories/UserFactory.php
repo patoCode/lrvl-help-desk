@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'ldap' => Arr::random(['si','no']),
             'password' => Str::random(10),
-            'status' => Arr::random(['activo','inactivo']),
+            'status' => Arr::random(['activo','activo']),
         ];
     }
 

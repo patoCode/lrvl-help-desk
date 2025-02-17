@@ -22,9 +22,12 @@ class TecnicoFactory extends Factory
         return [
             'id' => Uuid::uuid4(),
             'usuario_id' => User::factory(),
+            'phone' => $this->faker->phoneNumber(),
+            'email' => $this->faker->email(),
+            'photo' => $this->faker->imageUrl(),
             'registry_by' => Arr::random(['denis.rodriguez','natalia.medrano','angemon']),
             'updated_by' => Arr::random(['denis.rodriguez','natalia.medrano','angemon']),
-            'status' => Arr::random(['activo','inactivo']),
+            'status' => Arr::random(['activo','activo']),
         ];
     }
 }

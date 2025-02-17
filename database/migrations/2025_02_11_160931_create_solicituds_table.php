@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('usuario_id');
             $table->string('tecnico_id')->nullable();
             $table->string('cola_id')->nullable();
-            $table->string('status',10);
+            $table->string('status',10)->comment("Para saber el estado de la solicitud: OPEN, CLOSED, REJECT, etc.");
             $table->timestamps();
 
 

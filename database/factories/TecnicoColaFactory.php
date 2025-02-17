@@ -26,7 +26,7 @@ class TecnicoColaFactory extends Factory
             'tecnico_id' => Tecnico::factory(),
             'cola_id' => Cola::factory(),
             'registry_by' => Arr::random(['pikachu','raichu','angemon']),
-            'status' => Arr::random(['activo','inactivo']),
+            'status' => Arr::random(['activo','activo']),
         ];
     }
 }

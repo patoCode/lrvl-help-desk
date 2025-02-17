@@ -102,6 +102,11 @@ class ColaController extends Controller
                         'order' => $order[0] + 1,
                         'registry_by' => 'postman'
                     ]);
+                    $colaDB = Cola::where('id', $cola)->first();
+                    $colaDB->update([
+                        'max_value' => $colaDB->max_value + 1,
+                    ]);
+                    dd($colaDB);
                 }
                 return response()->json(['msg' => 'Registro exitoso.'], Response::HTTP_OK);
             }else{
@@ -136,6 +141,8 @@ class ColaController extends Controller
 
             $tecnicoDB->status = $status;
             $tecnicoDB->save();
+            
+
             return response()->json([
                 'msg' => 'Correcto',
                 'tecnico' => new TecnicoColaResource($tecnicoDB)

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('usuario_id');
             $table->string('category_id');
             $table->string('solicitud_id');
-            $table->string('tecnico_id');
+            $table->string('tecnico_id')->nullable();
             $table->string('status_bitacora',10);
             $table->string('status',10);
             $table->timestamps();

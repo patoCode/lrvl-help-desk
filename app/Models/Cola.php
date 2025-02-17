@@ -12,7 +12,13 @@ class Cola extends ModelBase
     /** @use HasFactory<\Database\Factories\ColaFactory> */
     use HasFactory;
     protected $table = 'colas';
-    protected $fillable = ['id','ultima_asignacion','category_id','status'];
+    protected $fillable = [
+                            'id',
+                            'ultima_asignacion',
+                            'max_value',
+                            'category_id',
+                            'status'
+    ];
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'category_id','id');
@@ -25,6 +31,22 @@ class Cola extends ModelBase
                     ->orderBy('created_at', 'desc')
                     ->pluck('id')
                     ->toArray();
+    }
+
+    public static function findColaInCategory(string $id)
+    {
+        return self::where('category_id', $id)
+            ->where('status', BasicConstants::STATUS_ACTIVE)
+            ->orderBy('created_at', 'desc')
+            ->first();
+    }
+
+    public static function findColaInCategoryArray(string $id)
+    {
+        return self::where('category_id', $id)
+            ->where('status', BasicConstants::STATUS_ACTIVE)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
 

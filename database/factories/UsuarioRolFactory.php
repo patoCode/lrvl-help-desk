@@ -24,7 +24,7 @@ class UsuarioRolFactory extends Factory
             'id' => Uuid::uuid4(),
             'usuario_id' => User::factory(), // Relación con User
             'rol_id' => Rol::factory(),
-            'status' => Arr::random(['activo','inactivo']),
+            'status' => Arr::random(['activo','activo']),
         ];
     }
 }

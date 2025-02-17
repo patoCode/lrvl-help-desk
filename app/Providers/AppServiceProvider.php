@@ -2,11 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\CategoriaCreada;
-use App\Listeners\CrearColaParaCategoria;
+use App\Services\ConfigSystemService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ConfigSystemService::class, function ($app) {
+            return new ConfigSystemService();
+        });
     }
 
     /**

@@ -37,7 +37,13 @@ Route::post('/user/add-rol', [UserController::class, 'addRol']);
 // TECHNICAL USERS
 Route::get('/technical',[TecnicoController::class, 'index']);
 Route::get('/technical/{id}',[TecnicoController::class, 'show']);
+Route::get('/technical/available/{category}',[TecnicoController::class, 'notInCategory']);
+
 
 // SOLICITUDES
 Route::get('/incident',[SolicitudController::class, 'index']);
 Route::post('/incident',[SolicitudController::class, 'store']);
+Route::post('/incident/event',[SolicitudController::class, 'event']);
+Route::post('/incident/solve',[SolicitudController::class, 'solve']);
+
+
