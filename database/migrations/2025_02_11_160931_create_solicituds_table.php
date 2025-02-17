@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('solicitud', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->text('description');
-            $table->integer('priority')->default(1000);
+            $table->text('code')->nullable(false);
+            $table->text('priority')->nullable(false);
             $table->string('registry_by')->nullable(false);
             $table->string('updated_by');
             $table->boolean('is_promediable')->default(true);
             $table->string('category_id');
             $table->string('usuario_id');
-            $table->string('tecnico_id');
-            $table->string('cola_id');
+            $table->string('tecnico_id')->nullable();
+            $table->string('cola_id')->nullable();
             $table->string('status',10);
             $table->timestamps();
 

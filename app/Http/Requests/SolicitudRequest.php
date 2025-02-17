@@ -19,7 +19,8 @@ class SolicitudRequest extends FormRequest
             'description' => 'required|min:10',
             'priority' => 'required|in:C,H,M,L',
             'is_promediable' => 'nullable',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'registry_by' => 'nullable',
         ];
     }
 }

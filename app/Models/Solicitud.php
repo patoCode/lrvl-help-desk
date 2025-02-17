@@ -14,23 +14,17 @@ class Solicitud extends ModelBase
     protected $fillable = [
                             'id',
                             'description',
+                            'code',
                             'priority',
                             'registry_by',
                             'updated_by',
-                            'is_promediable',
                             'category_id',
                             'usuario_id',
                             'tecnico_id',
                             'cola_id',
-                            'status'
+                            'status',
+                            'is_promediable'
                             ];
-
-    protected $attributes = [
-        'is_public' => true,
-        'is_promediable' => true,
-        'is_schedulable' => false,
-    ];
-
 
     public function categoria()
     {
