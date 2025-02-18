@@ -70,9 +70,9 @@ class SolicitudController extends Controller
     private function aditionals($array)
     {
         $array['is_promediable'] = true;
-        $array['registry_by'] = "Denis";
-        $array['updated_by'] = "Denis";
-        $array['usuario_id'] = "d19391ac-b16d-45b6-8649-95a92033ccdc";
+        $array['registry_by'] = auth()->user()->username;
+        $array['updated_by'] = auth()->user()->username;
+        $array['usuario_id'] = auth()->user()->id;
         $array['status'] = SolicitudEventoEnum::CREATED;
         return $array;
     }
